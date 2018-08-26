@@ -74,7 +74,12 @@ app.post("/api/exercise/add",function(req, res){
       res.json({_id:data._id});
     });
 });
-
+//get user exercise
+app.get("/api/exercise/log",function(req,res){
+  Exercise.find({userId:req.query.userId,from:req.query.from,to:req.query.to,limit:req.query.limit},function(err,data){
+    res.json(data);
+  });
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
