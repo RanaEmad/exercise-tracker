@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
+mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track')
 
 app.use(cors())
 
@@ -18,11 +18,26 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+//new Schema
+var Schema= mongoose.Schema;
+var userSchema= new Schema({
+  username: String
+});
+var exSchema= new Schema({
+  userId:{type:String, required:true},
+  description:{type:String, required:true},
+  duration:{type: Number, required:true},
+  date: Date
+});
+
+// models
+var User= mongoose.model("User",userSchema);
+var Exercise= mongoose.model("Exercise", exSchema);
 
 // Not found middleware
-app.use((req, res, next) => {
-  return next({status: 404, message: 'not found'})
-})
+// app.use((req, res, next) => {
+//   return next({status: 404, message: 'not found'})
+// })
 
 // Error Handling middleware
 app.use((err, req, res, next) => {
@@ -42,6 +57,8 @@ app.use((err, req, res, next) => {
   res.status(errCode).type('txt')
     .send(errMessage)
 })
+
+
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
