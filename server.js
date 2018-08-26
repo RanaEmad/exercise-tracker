@@ -58,6 +58,12 @@ app.use((err, req, res, next) => {
     .send(errMessage)
 })
 
+//add user
+app.post("/api/exercise/new-user",function(req, res){
+    User.create({username:req.body.username}, function(err, data){
+      res.json({username:req.body.username,_id:data._id});
+    });
+});
 
 
 const listener = app.listen(process.env.PORT || 3000, () => {
